@@ -1,7 +1,7 @@
 package_name = Dir.glob("*.gemspec")[0].split(".")[0]
-require "./lib/#{package_name}/version"
+require "./lib/rack/berater/version"
 
-package = MY_NEW_GEM
+package = Rack::Berater
 
 
 Gem::Specification.new do |s|
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Daniel Pepper"]
   s.summary     = package.to_s
   s.description = "..."
-  s.homepage    = "https://github.com/dpep/#{package_name}_rb"
+  s.homepage    = "https://github.com/dpep/#{package_name}"
   s.license     = "MIT"
 
   s.files       = Dir.glob("lib/**/*")
