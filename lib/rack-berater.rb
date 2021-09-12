@@ -1,5 +1,3 @@
-require "MY_NEW_GEM/version"
-
-module MY_NEW_GEM
-
-end
+require "berater"
+require "rack"
+require "rack/berater"

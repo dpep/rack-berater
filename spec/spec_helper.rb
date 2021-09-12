@@ -15,6 +15,9 @@ end
 gem_name = Dir.glob("*.gemspec")[0].split(".")[0]
 require gem_name
 
+require "berater/rspec"
+require "rack/test"
+
 RSpec.configure do |config|
   # allow "fit" examples
   config.filter_run_when_matching :focus
@@ -23,6 +26,8 @@ RSpec.configure do |config|
     # verify existence of stubbed methods
     mocks.verify_partial_doubles = true
   end
+
+  include Rack::Test::Methods
 end
 
 # Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
