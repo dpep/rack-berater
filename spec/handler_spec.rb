@@ -11,8 +11,20 @@ describe Rack::Berater::Handler do
   let(:response) { get "/" }
 
   shared_examples "works nominally" do
-    it { expect(response.status).to eq 200 }
-    it { expect(response.body).to eq "OK" }
+    it "has the correct status code" do
+      expect(response.status).to eq 200
+    end
+
+    it "has the correct headers" do
+      expect(response.headers).to eq({
+        "Content-Type" => "text/plain",
+        "Content-Length" => "2",
+      })
+    end
+
+    it "has the correct body" do
+      expect(response.body).to eq "OK"
+    end
   end
 
   context "without Handler" do
@@ -61,6 +73,10 @@ describe Rack::Berater::Handler do
       it "should not send a body" do
         expect(response.body).to be_empty
       end
+
+      it "should not send the Content-Type header" do
+        expect(response.headers.keys).not_to include(Rack::CONTENT_TYPE)
+      end
     end
 
     context "with body nil" do
@@ -92,6 +108,18 @@ describe Rack::Berater::Handler do
       it "should pass in the env and error" do
         expect(fn).to receive(:call).with(Hash, ::Berater::Overloaded)
         response
+      end
+    end
+
+    context "with custom headers" do
+      let(:options) { { headers: { Rack::CACHE_CONTROL => "no-cache" } } }
+
+      it "should contain the default headers" do
+        expect(response.headers.keys).to include(Rack::CONTENT_TYPE)
+      end
+
+      it "should also contain custom header" do
+        expect(response.headers).to include(options[:headers])
       end
     end
   end

@@ -5,6 +5,9 @@ module Rack
         @app = app
         @options = {
           status_code: options.fetch(:status_code, 429),
+          headers: {
+            Rack::CONTENT_TYPE => "text/plain",
+          }.update(options.fetch(:headers, {})),
           body: options.fetch(:body, true),
         }
       end
@@ -13,6 +16,7 @@ module Rack
         @app.call(env)
       rescue ::Berater::Overloaded => e
         code = @options[:status_code]
+
         body = case @options[:body]
           when true
             Rack::Utils::HTTP_STATUS_CODES[code]
@@ -26,9 +30,11 @@ module Rack
             raise ArgumentError, "invalid :body option: #{@options[:body]}"
           end
 
+        headers = body ? @options[:headers] : {}
+
         [
           code,
-          {},
+          headers,
           [ body ].compact,
         ]
       end
