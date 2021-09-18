@@ -1,10 +1,13 @@
 require "berater"
 require "rack"
 require "rack/berater/version"
+require "set"
 
 module Rack
   class Berater
     autoload :Railtie, "rack/berater/railtie"
+
+    ERROR_TYPES = Set.new([ ::Berater::Overloaded ])
 
     def initialize(app, options = {})
       @app = app
@@ -19,7 +22,7 @@ module Rack
 
     def call(env)
       @app.call(env)
-    rescue ::Berater::Overloaded => e
+    rescue *ERROR_TYPES => e
       code = @options[:status_code]
 
       body = case @options[:body]

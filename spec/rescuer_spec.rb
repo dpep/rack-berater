@@ -1,13 +1,15 @@
 describe Rack::Berater do
   let(:app) do
+    e = error
     Rack::Builder.new do
       use Rack::Lint
       run (lambda do |env|
-        raise ::Berater::Overloaded if ::Berater.test_mode == :fail
+        raise e if Berater.test_mode == :fail
         [200, {"Content-Type" => "text/plain"}, ["OK"]]
       end)
     end
   end
+  let(:error) { Berater::Overloaded }
   let(:response) { get "/" }
 
   shared_examples "works nominally" do
@@ -120,6 +122,26 @@ describe Rack::Berater do
 
       it "should also contain custom header" do
         expect(response.headers).to include(options[:headers])
+      end
+    end
+  end
+
+  context "with custom error type" do
+    before do
+      app.use described_class
+      Berater.test_mode = :fail
+    end
+    let(:error) { IOError }
+
+    it "normally crashes the app" do
+      expect { response }.to raise_error(IOError)
+    end
+
+    context "when error type is registered with middleware" do
+      before { Rack::Berater::ERROR_TYPES << IOError }
+
+      it "catches and transforms limit errors" do
+        expect(response.status).to eq 429
       end
     end
   end
