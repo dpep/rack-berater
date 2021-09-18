@@ -1,7 +1,7 @@
 require 'rails/railtie'
 
 module Rack
-  module Berater
+  class Berater
     class Railtie < Rails::Railtie
       initializer "rack.berater.initializer" do |app|
         app.middleware.use Rack::Berater

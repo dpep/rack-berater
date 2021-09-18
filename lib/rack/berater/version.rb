@@ -1,5 +1,5 @@
 module Rack
-  module Berater
+  class Berater
     VERSION = "0.0.2"
   end
 end

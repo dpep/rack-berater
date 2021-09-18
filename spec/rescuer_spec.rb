@@ -1,4 +1,4 @@
-describe Rack::Berater::Handler do
+describe Rack::Berater do
   let(:app) do
     Rack::Builder.new do
       use Rack::Lint
@@ -27,7 +27,7 @@ describe Rack::Berater::Handler do
     end
   end
 
-  context "without Handler" do
+  context "without middleware" do
     include_examples "works nominally"
 
     it "does not catch limit errors" do
@@ -38,7 +38,7 @@ describe Rack::Berater::Handler do
     end
   end
 
-  context "with Handler using default settings" do
+  context "with middleware using default settings" do
     context "with default settings" do
       before { app.use described_class }
 
@@ -52,7 +52,7 @@ describe Rack::Berater::Handler do
     end
   end
 
-  context "with Handler using custom settings" do
+  context "with middleware using custom settings" do
     before do
       app.use described_class, options
       Berater.test_mode = :fail
