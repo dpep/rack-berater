@@ -137,8 +137,12 @@ describe Rack::Berater do
       expect { response }.to raise_error(IOError)
     end
 
-    context "when error type is registered with middleware" do
-      before { Rack::Berater::ERROR_TYPES << IOError }
+    context "when an error type is registered with middleware" do
+      around do |example|
+        Rack::Berater::ERROR_TYPES << IOError
+        example.run
+        Rack::Berater::ERROR_TYPES.delete(IOError)
+      end
 
       it "catches and transforms limit errors" do
         expect(response.status).to eq 429
