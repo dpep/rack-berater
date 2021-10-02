@@ -1,15 +1,14 @@
 describe Rack::Berater do
   let(:app) do
-    e = error
     Rack::Builder.new do
       use Rack::Lint
       run (lambda do |env|
-        raise e if Berater.test_mode == :fail
-        [200, {"Content-Type" => "text/plain"}, ["OK"]]
+        Berater::Unlimiter() do
+          [200, {"Content-Type" => "text/plain"}, ["OK"]]
+        end
       end)
     end
   end
-  let(:error) { Berater::Overloaded }
   let(:response) { get "/" }
 
   shared_examples "works nominally" do
@@ -41,16 +40,14 @@ describe Rack::Berater do
   end
 
   context "with middleware using default settings" do
-    context "with default settings" do
-      before { app.use described_class }
+    before { app.use described_class }
 
-      include_examples "works nominally"
+    include_examples "works nominally"
 
-      it "catches and transforms limit errors" do
-        Berater.test_mode = :fail
-        expect(response.status).to eq 429
-        expect(response.body).to eq "Too Many Requests"
-      end
+    it "catches and transforms limit errors" do
+      Berater.test_mode = :fail
+      expect(response.status).to eq 429
+      expect(response.body).to eq "Too Many Requests"
     end
   end
 
@@ -126,9 +123,8 @@ describe Rack::Berater do
   context "with custom error type" do
     before do
       app.use described_class
-      Berater.test_mode = :fail
+      expect(Berater::Limiter).to receive(:new).and_raise(IOError)
     end
-    let(:error) { IOError }
 
     it "normally crashes the app" do
       expect { response }.to raise_error(IOError)
