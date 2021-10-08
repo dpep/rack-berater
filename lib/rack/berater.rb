@@ -7,7 +7,7 @@ module Rack
   class Berater
     autoload :Railtie, "rack/berater/railtie"
 
-    ERROR_TYPES = Set.new([ ::Berater::Overloaded ])
+    ERROR_TYPES = Set[ ::Berater::Overloaded ]
 
     def initialize(app, options = {})
       @app = app

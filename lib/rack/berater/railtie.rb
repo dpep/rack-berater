@@ -1,4 +1,4 @@
-require 'rails/railtie'
+require "rails/railtie"
 
 module Rack
   class Berater
