@@ -1,5 +1,5 @@
-require 'rails'
-require 'rack/berater/railtie'
+require "rails"
+require "rack/berater/railtie"
 
 RSpec.describe Rack::Berater::Railtie do
   subject { Rails.initialize! }
@@ -11,7 +11,7 @@ RSpec.describe Rack::Berater::Railtie do
     end
   end
 
-  it 'adds middleware automatically' do
+  it "adds middleware automatically" do
     expect(subject.middleware).to include(Rack::Berater)
   end
 end
