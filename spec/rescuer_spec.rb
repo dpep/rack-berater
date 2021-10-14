@@ -61,7 +61,7 @@ describe Rack::Berater do
       context "with body nil" do
         let(:options) { { body: nil } }
 
-        it "should default to sending a body" do
+        it "falls back to the default" do
           expect(response.body).to eq "Too Many Requests"
         end
       end
@@ -84,6 +84,16 @@ describe Rack::Berater do
 
         it "should send the custom string" do
           expect(response.body).to eq body
+        end
+      end
+
+      context "with an erroneous value" do
+        let(:options) { { body: 123 } }
+
+        it 'should raise an error' do
+          expect {
+            response
+          }.to raise_error(ArgumentError)
         end
       end
     end
