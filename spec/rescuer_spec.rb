@@ -142,9 +142,9 @@ describe Rack::Berater do
 
     context "when an error type is registered with middleware" do
       around do |example|
-        Rack::Berater::ERROR_TYPES << IOError
+        Rack::Berater::ERRORS << IOError
         example.run
-        Rack::Berater::ERROR_TYPES.delete(IOError)
+        Rack::Berater::ERRORS.delete(IOError)
       end
 
       it "catches and transforms limit errors" do

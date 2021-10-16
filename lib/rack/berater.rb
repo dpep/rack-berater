@@ -7,7 +7,7 @@ module Rack
   class Berater
     autoload :Railtie, "rack/berater/railtie"
 
-    ERROR_TYPES = Set[ ::Berater::Overloaded ]
+    ERRORS = Set[ ::Berater::Overloaded ]
 
     def initialize(app, options = {})
       @app = app
@@ -43,7 +43,7 @@ module Rack
       else
         @app.call(env)
       end
-    rescue *ERROR_TYPES => e
+    rescue *ERRORS => e
       [
         @options[:status_code],
         @options[:headers],
