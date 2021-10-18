@@ -39,7 +39,7 @@ module Rack
 
     def call(env)
       if enabled?(env)
-        @limiter.limit { @app.call(env) }
+        limit(env) { @app.call(env) }
       else
         @app.call(env)
       end
@@ -56,6 +56,11 @@ module Rack
     def enabled?(env)
       return false unless @limiter
       @enabled.nil? ? true : @enabled.call(env)
+    end
+
+    def limit(env, &block)
+      limiter = @limiter.respond_to?(:call) ? @limiter.call(env) : @limiter
+      limiter.limit(&block)
     end
   end
 end

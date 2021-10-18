@@ -39,20 +39,42 @@ describe Rack::Berater do
   end
 
   describe "limiter option" do
-    let(:limiter) { ::Berater::Unlimiter.new }
+    context "when limiter is a limiter" do
+      let(:limiter) { ::Berater::Unlimiter.new }
 
-    include_examples "works nominally"
+      include_examples "works nominally"
 
-    it "calls the limiter" do
-      expect(limiter).to receive(:limit).and_call_original
-      response
+      it "calls the limiter" do
+        expect(limiter).to receive(:limit).and_call_original
+        response
+      end
+
+      context "when operating beyond limits" do
+        before { Berater.test_mode = :fail }
+
+        it "returns an error" do
+          expect(response.status).to eq 429
+        end
+      end
     end
 
-    context "when operating beyond limits" do
-      before { Berater.test_mode = :fail }
+    context "when limiter is a proc" do
+      let(:limiter_instance) { ::Berater::Unlimiter.new }
+      let(:limiter) { Proc.new { limiter_instance } }
 
-      it "returns an error" do
-        expect(response.status).to eq 429
+      include_examples "works nominally"
+
+      it "calls the proc with env" do
+        expect(limiter).to receive(:call).with(Hash).and_call_original
+        response
+      end
+
+      context "when operating beyond limits" do
+        before { Berater.test_mode = :fail }
+
+        it "returns an error" do
+          expect(response.status).to eq 429
+        end
       end
     end
   end
