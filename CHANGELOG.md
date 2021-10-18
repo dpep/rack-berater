@@ -1,3 +1,10 @@
+###  v0.2.0  (2021-10-18)
+- limiter proc
+- Update README.md
+- rename error types
+- test coverage
+- railtie spec
+
 ###  v0.1.0  (2021-10-02)
 - ability to limit rack requests
 - clean up spec
