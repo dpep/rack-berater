@@ -4,6 +4,10 @@ module Rack
   class Berater
     class Railtie < Rails::Railtie
       initializer "rack.berater" do |app|
+        if ::Berater.middleware.include?(Berater::Middleware::LoadShedder)
+          app.middleware.use Rack::Berater::Prioritizer
+        end
+
         app.middleware.use Rack::Berater
       end
     end
