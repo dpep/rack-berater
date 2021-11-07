@@ -6,26 +6,32 @@ Limit incoming Rack requests with [Berater](https://github.com/dpep/berater_rb).
 
 ## Basic Usage
 
-Transform limit errors into HTTP status code 429s
+Transform limit errors into HTTP status code 429
 ```ruby
 require "rack/berater/railtie"
 ```
 
 
 ## Customized Response
+Customize the rack response returned when a limit error occurs:
+* `status_code` - which HTTP status code
+* `body` - what message
+* `headers` - hash of headers
 
 ```ruby
-Rack::Berater, options
+require "rack/berater"
+
+Rails.application.middleware.use(Rack::Berater, status_code: 503, body: "slow down yo")
 ```
-* `options`
-  * `status_code` - which HTTP status code to return when a limit error occurs
-  * `body` - what message to return when a limit error occurs
-  * `headers` - hash of which headers to return when a limit error occurs
+
+
+## Enforce Limits
+Add a limiter to every incoming rack request.
 
 ```ruby
-require "rack-berater"
+require "rack/berater"
 
-Rails.application.middleware.use(Rack::Berater, status_code: 503)
+Rails.application.middleware.use(Rack::Berater, limiter: Berater::ConcurrencyLimiter.new(key, capacity))
 ```
 
 
