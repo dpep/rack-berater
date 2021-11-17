@@ -41,7 +41,7 @@ describe Rack::Berater::Prioritizer do
       it 'updates the global priority during the request' do
         expect(app).to receive(:call) do
           expect(described_class.current_priority).to eq priority
-        end.and_call_original
+        end
       end
 
       it 'resets the priority after the request completes' do

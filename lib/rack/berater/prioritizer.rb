@@ -27,7 +27,7 @@ module Rack
         end
 
         @app.call(env).tap do |status, headers, body|
-          app_priority = headers.delete(@header)
+          app_priority = headers.delete(@header) if headers
 
           if app_priority && app_priority != cached_priority
             # update cache for next time
