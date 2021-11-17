@@ -1,3 +1,6 @@
+###  v0.3.0  (2021-11-17)
+- prioritizer
+
 ###  v0.2.0  (2021-10-18)
 - limiter proc
 - Update README.md
