@@ -1,12 +1,12 @@
-require "berater"
-require "rack"
-require "rack/berater/version"
-require "set"
+require 'berater'
+require 'rack'
+require 'rack/berater/version'
+require 'set'
 
 module Rack
   class Berater
-    autoload :Prioritizer, "rack/berater/prioritizer"
-    autoload :Railtie, "rack/berater/railtie"
+    autoload :Prioritizer, 'rack/berater/prioritizer'
+    autoload :Railtie, 'rack/berater/railtie'
 
     ERRORS = Set[ ::Berater::Overloaded ]
 
@@ -28,12 +28,12 @@ module Rack
         when String
           options[:body]
         else
-          raise ArgumentError, "invalid :body option: #{options[:body]}"
+          raise ArgumentError, 'invalid :body option: #{options[:body]}'
         end
 
       # configure headers
       if @options[:body]
-        @options[:headers][Rack::CONTENT_TYPE] = "text/plain"
+        @options[:headers][Rack::CONTENT_TYPE] = 'text/plain'
       end
       @options[:headers].update(options.fetch(:headers, {}))
     end

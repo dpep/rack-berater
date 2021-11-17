@@ -1,1 +1,1 @@
-require "rack/berater"
+require 'rack/berater'
