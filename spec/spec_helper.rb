@@ -1,4 +1,8 @@
+require "action_controller/railtie"
+require "berater/rspec"
 require "byebug"
+require "rack/test"
+require "rails"
 require "rspec"
 require "simplecov"
 
@@ -14,9 +18,6 @@ end
 # load this gem
 gem_name = Dir.glob("*.gemspec")[0].split(".")[0]
 require gem_name
-
-require "berater/rspec"
-require "rack/test"
 
 RSpec.configure do |config|
   # allow "fit" examples
