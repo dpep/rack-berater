@@ -30,6 +30,7 @@ describe Rack::Berater::RailsPrioritizer do
       get '/' => 'echo#index'
       get '/six' => 'echo#six'
       post '/nine' => 'echo#nine'
+      get '/redirect' => redirect('/')
     end
   end
 
@@ -65,6 +66,12 @@ describe Rack::Berater::RailsPrioritizer do
       expect(
         subject.call(Rack::MockRequest.env_for('/nine'))
       ).to match %r{get:/nine}
+    end
+
+    it 'works with redirects' do
+      expect(
+        subject.call(Rack::MockRequest.env_for('/redirect'))
+      ).to match %r{get:/redirect}
     end
   end
 
