@@ -38,8 +38,6 @@ describe Rack::Berater::RailsPrioritizer do
   let(:middleware) { described_class.new(app) }
 
   after do
-    cache.clear
-    Thread.current[described_class::ENV_KEY] = nil
     Rails.application = nil
   end
 

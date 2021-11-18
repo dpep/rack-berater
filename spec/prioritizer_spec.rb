@@ -1,9 +1,4 @@
 describe Rack::Berater::Prioritizer do
-  after do
-    cache.clear
-    Thread.current[described_class::ENV_KEY] = nil
-  end
-
   let(:cache) { described_class.class_variable_get(:@@cache) }
 
   describe '#call' do

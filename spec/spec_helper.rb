@@ -1,6 +1,7 @@
 require 'action_controller/railtie'
 require 'berater/rspec'
 require 'byebug'
+require 'rack/berater/rspec'
 require 'rack/test'
 require 'rails'
 require 'rspec'

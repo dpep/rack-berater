@@ -9,6 +9,8 @@ module Rack
       def initialize(app, options = {})
         @app = app
         @header = options[:header] || HEADER
+
+        synchronize { @@cache ||= {} }
       end
 
       def call(env)
@@ -57,7 +59,6 @@ module Rack
         ].join(':')
       end
 
-      @@cache = {}
       def cache_get(key)
         synchronize { @@cache[key] }
       end
