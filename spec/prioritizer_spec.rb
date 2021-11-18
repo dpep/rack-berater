@@ -248,7 +248,7 @@ describe Rack::Berater::Prioritizer do
       Rails.application.routes.draw do
         get '/' => 'echo#index'
         get '/six' => 'echo#six'
-        get '/nine' => 'echo#nine'
+        post '/nine' => 'echo#nine'
       end
     end
 
@@ -280,15 +280,15 @@ describe Rack::Berater::Prioritizer do
     context 'when the app returns a priority' do
       it 'does not know the first time the controller is called' do
         expect(get('/six').body).to be_empty
-        expect(get('/nine').body).to be_empty
+        expect(post('/nine').body).to be_empty
       end
 
       it 'caches the repsonses for the second time' do
         expect(get('/six').body).to be_empty
-        expect(get('/nine').body).to be_empty
+        expect(post('/nine').body).to be_empty
 
         expect(get('/six').body).to eq '6'
-        expect(get('/nine').body).to eq '9'
+        expect(post('/nine').body).to eq '9'
       end
     end
   end
