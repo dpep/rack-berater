@@ -6,6 +6,7 @@ require 'set'
 module Rack
   class Berater
     autoload :Prioritizer, 'rack/berater/prioritizer'
+    autoload :RailsPrioritizer, 'rack/berater/rails_prioritizer'
     autoload :Railtie, 'rack/berater/railtie'
 
     ERRORS = Set[ ::Berater::Overloaded ]

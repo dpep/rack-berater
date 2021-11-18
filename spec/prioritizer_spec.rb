@@ -117,12 +117,8 @@ describe Rack::Berater::Prioritizer do
     context 'with a basic env' do
       let(:env) { Rack::MockRequest.env_for('/') }
 
-      it 'has a Berater prefix' do
-        is_expected.to match /^Berater:/
-      end
-
       it 'combines the verb and path' do
-        is_expected.to match %r{:get:/$}
+        is_expected.to match %r{get:/$}
       end
     end
 
@@ -130,7 +126,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/', method: 'PUT') }
 
       it 'combines the verb and path' do
-        is_expected.to match %r{:put:/$}
+        is_expected.to match %r{put:/$}
       end
     end
 
@@ -138,7 +134,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/user/123') }
 
       it 'normalizes the id' do
-        is_expected.to match %r{:/user/x$}
+        is_expected.to match %r{get:/user/x$}
       end
     end
 
@@ -146,7 +142,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/user/123/') }
 
       it 'normalizes the id and keeps the trailing slash' do
-        is_expected.to match %r{:/user/x/$}
+        is_expected.to match %r{get:/user/x/$}
       end
     end
 
@@ -154,7 +150,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/user/123/friend/456') }
 
       it 'normalizes both ids' do
-        is_expected.to match %r{:/user/x/friend/x$}
+        is_expected.to match %r{get:/user/x/friend/x$}
       end
     end
   end
@@ -218,78 +214,5 @@ describe Rack::Berater::Prioritizer do
     #     expect(call('/nine')).to '9'
     #   end
     # end
-  end
-
-  context 'as Rails middleware' do
-    before do
-      class EchoController < ActionController::Base
-        def index
-          render plain: Rack::Berater::Prioritizer.current_priority
-        end
-
-        def six
-          response.set_header(Rack::Berater::Prioritizer::HEADER, '6')
-          index
-        end
-
-        def nine
-          response.set_header(Rack::Berater::Prioritizer::HEADER, '9')
-          index
-        end
-      end
-
-      Rails.application = Class.new(Rails::Application) do
-        config.eager_load = false
-        config.hosts.clear # disable hostname filtering
-      end
-      Rails.application.middleware.use described_class
-      Rails.initialize!
-
-      Rails.application.routes.draw do
-        get '/' => 'echo#index'
-        get '/six' => 'echo#six'
-        post '/nine' => 'echo#nine'
-      end
-    end
-
-    let(:app) { Rails.application }
-    let(:middleware) { described_class.new(app) }
-
-    after { Rails.application = nil }
-
-    describe '#cache_key_for' do
-      subject { described_class.new(app).send(:cache_key_for, env) }
-
-      let(:env) { Rack::MockRequest.env_for('/') }
-
-      it 'uses the controller and action name' do
-        is_expected.to match %r{:echo#index$}
-      end
-    end
-
-    context 'when a priority header is sent' do
-      before { header described_class::HEADER, priority }
-
-      let(:priority) { '6' }
-
-      it 'sets the priority' do
-        expect(get('/six').body).to eq priority
-      end
-    end
-
-    context 'when the app returns a priority' do
-      it 'does not know the first time the controller is called' do
-        expect(get('/six').body).to be_empty
-        expect(post('/nine').body).to be_empty
-      end
-
-      it 'caches the repsonses for the second time' do
-        expect(get('/six').body).to be_empty
-        expect(post('/nine').body).to be_empty
-
-        expect(get('/six').body).to eq '6'
-        expect(post('/nine').body).to eq '9'
-      end
-    end
   end
 end

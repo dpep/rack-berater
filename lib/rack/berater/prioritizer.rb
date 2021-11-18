@@ -48,34 +48,16 @@ module Rack
         Thread.current[ENV_KEY] = priority
       end
 
-      @@cache_prefix = 'Berater:Rack:Prioritizer'
       def cache_key_for(env)
-        req = Rack::Request.new(env)
-
-        req_method = env[Rack::REQUEST_METHOD].downcase
-        path = ''
-
-        if defined?(Rails) && Rails.respond_to?(:application) && Rails.application
-          res = Rails.application.routes.recognize_path(
-            env[Rack::PATH_INFO],
-            method: env[Rack::REQUEST_METHOD],
-          )
-          path = res.values_at(:controller, :action).compact.join('#')
-        end
-
-        if path.empty?
-          path = env['PATH_INFO'].gsub(%r{/[0-9]+(/|$)}, '/x\1')
-        end
-
         [
-          @@cache_prefix,
-          req_method,
-          path,
+          env[Rack::REQUEST_METHOD].downcase,
+
+          # normalize RESTful paths
+          env['PATH_INFO'].gsub(%r{/[0-9]+(/|$)}, '/x\1'),
         ].join(':')
       end
 
       @@cache = {}
-
       def cache_get(key)
         synchronize { @@cache[key] }
       end
