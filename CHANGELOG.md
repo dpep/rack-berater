@@ -1,3 +1,6 @@
+###  v0.4.1  (2021-11-18)
+- bug fix
+
 ###  v0.4.0  (2021-11-18)
 - rspec helper
 - test coverage for redirects
