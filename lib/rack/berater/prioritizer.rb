@@ -55,7 +55,7 @@ module Rack
         req_method = env[Rack::REQUEST_METHOD].downcase
         path = ''
 
-        if defined?(Rails) && Rails.application
+        if defined?(Rails) && Rails.respond_to?(:application)
           res = Rails.application.routes.recognize_path(env[Rack::PATH_INFO])
           path = res.values_at(:controller, :action).compact.join('#')
         end
