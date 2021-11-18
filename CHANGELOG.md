@@ -1,3 +1,7 @@
+###  v0.4.0  (2021-11-18)
+- rspec helper
+- test coverage for redirects
+
 ###  v0.3.2  (2021-11-17)
 - rails prioritizer
 
