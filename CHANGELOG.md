@@ -1,3 +1,6 @@
+###  v0.3.2  (2021-11-17)
+- rails prioritizer
+
 ###  v0.3.1  (2021-11-17)
 - bug fixes
 
