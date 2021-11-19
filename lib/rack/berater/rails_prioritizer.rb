@@ -1,6 +1,3 @@
-require 'action_controller/metal'
-require 'action_dispatch'
-
 module Rack
   class Berater
     class RailsPrioritizer < Prioritizer
@@ -9,7 +6,7 @@ module Rack
           env[Rack::PATH_INFO],
           method: env[Rack::REQUEST_METHOD],
         ).values_at(:controller, :action).compact.join('#')
-      rescue ActionController::RoutingError
+      rescue ActionController::RoutingError, NoMethodError
         super
       end
     end
