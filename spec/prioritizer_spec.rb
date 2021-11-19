@@ -30,7 +30,7 @@ describe Rack::Berater::Prioritizer do
       after { subject.call(env) }
 
       it 'sets the priority accordingly' do
-        is_expected.to receive(:set_priority).with(priority)
+        is_expected.to receive(:priority=).with(priority)
       end
 
       it 'updates the global priority during the request' do
@@ -57,12 +57,12 @@ describe Rack::Berater::Prioritizer do
       after { subject.call(env) }
 
       it 'uses the header' do
-        is_expected.to receive(:set_priority).with(priority)
+        is_expected.to receive(:priority=).with(priority)
       end
 
       it 'ignores any cached value' do
         allow(subject).to receive(:cache_get).with(cache_key).and_return('123')
-        is_expected.to receive(:set_priority).with(priority)
+        is_expected.to receive(:priority=).with(priority)
       end
 
       it 'resets the priority after the request completes' do

@@ -9,15 +9,13 @@ module Rack
       def initialize(app, options = {})
         @app = app
         @header = options[:header] || HEADER
-
-        synchronize { @@cache ||= {} }
       end
 
       def call(env)
         priority = env[@header] || env["HTTP_#{@header.upcase.tr('-', '_')}"]
 
         if priority
-          set_priority(priority)
+          self.priority = priority
           return @app.call(env)
         end
 
@@ -25,7 +23,7 @@ module Rack
         cached_priority = cache_get(cache_key)
 
         if cached_priority
-          set_priority(cached_priority)
+          self.priority = cached_priority
         end
 
         @app.call(env).tap do |status, headers, body|
@@ -46,7 +44,7 @@ module Rack
 
       protected
 
-      def set_priority(priority)
+      def priority=(priority)
         Thread.current[ENV_KEY] = priority
       end
 
@@ -59,6 +57,7 @@ module Rack
         ].join(':')
       end
 
+      @@cache = {}
       def cache_get(key)
         synchronize { @@cache[key] }
       end
