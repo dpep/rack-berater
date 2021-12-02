@@ -111,7 +111,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/') }
 
       it 'combines the verb and path' do
-        is_expected.to match %r{get:/$}
+        is_expected.to match %r{GET:/$}
       end
     end
 
@@ -119,7 +119,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/', method: 'PUT') }
 
       it 'combines the verb and path' do
-        is_expected.to match %r{put:/$}
+        is_expected.to match %r{PUT:/$}
       end
     end
 
@@ -127,7 +127,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/user/123') }
 
       it 'normalizes the id' do
-        is_expected.to match %r{get:/user/x$}
+        is_expected.to match %r{GET:/user/x$}
       end
     end
 
@@ -135,7 +135,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/user/123/') }
 
       it 'normalizes the id and keeps the trailing slash' do
-        is_expected.to match %r{get:/user/x/$}
+        is_expected.to match %r{GET:/user/x/$}
       end
     end
 
@@ -143,7 +143,7 @@ describe Rack::Berater::Prioritizer do
       let(:env) { Rack::MockRequest.env_for('/user/123/friend/456') }
 
       it 'normalizes both ids' do
-        is_expected.to match %r{get:/user/x/friend/x$}
+        is_expected.to match %r{GET:/user/x/friend/x$}
       end
     end
   end

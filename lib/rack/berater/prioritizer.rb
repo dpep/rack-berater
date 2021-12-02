@@ -50,7 +50,7 @@ module Rack
 
       def cache_key_for(env)
         [
-          env[Rack::REQUEST_METHOD].downcase,
+          env[Rack::REQUEST_METHOD],
 
           # normalize RESTful paths
           env['PATH_INFO'].gsub(%r{/[0-9]+(/|$)}, '/x\1'),

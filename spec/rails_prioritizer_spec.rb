@@ -61,13 +61,13 @@ describe Rack::Berater::RailsPrioritizer do
     it 'falls back to Rack style names' do
       expect(
         subject.call(Rack::MockRequest.env_for('/nine'))
-      ).to match %r{get:/nine}
+      ).to match %r{GET:/nine}
     end
 
     it 'works with redirects' do
       expect(
         subject.call(Rack::MockRequest.env_for('/redirect'))
-      ).to match %r{get:/redirect}
+      ).to match %r{GET:/redirect}
     end
   end
 
