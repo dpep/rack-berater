@@ -1,6 +1,4 @@
 describe Rack::Berater::Prioritizer do
-  let(:cache) { described_class.class_variable_get(:@@cache) }
-
   describe '#call' do
     subject { described_class.new(app) }
 
@@ -188,7 +186,6 @@ describe Rack::Berater::Prioritizer do
 
       it 'parses the priority returned from the app' do
         expect(call).to be_empty
-        expect(cache.values).to include app_priority
       end
 
       it 'uses the cached priority for subsequent calls' do
@@ -196,18 +193,5 @@ describe Rack::Berater::Prioritizer do
         expect(call).to eq app_priority
       end
     end
-
-    # context 'when two different endpoints are called' do
-    #   fit 'parses and caches each priority' do
-    #     @app_priority = '6'
-    #     expect(call('/six')).to be_empty
-
-    #     expect(call('/six')).to eq '6'
-
-    #     @app_priority = '9'
-    #     expect(call('/nine')).to be_empty
-    #     expect(call('/nine')).to '9'
-    #   end
-    # end
   end
 end

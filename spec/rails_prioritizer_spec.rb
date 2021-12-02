@@ -41,8 +41,6 @@ describe Rack::Berater::RailsPrioritizer do
     Rails.application = nil
   end
 
-  let(:cache) { described_class.class_variable_get(:@@cache) }
-
   describe '#cache_key_for' do
     subject { described_class.new(app).method(:cache_key_for) }
 
