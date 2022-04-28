@@ -29,15 +29,7 @@ describe Rack::Berater do
 
   let(:app) { Rails.application }
 
-  after do
-    Rails.application = nil
-  end
-
-  context 'when within limits' do
-    before { Berater.test_mode = :pass }
-
-    it { expect(get('/')).to be_ok }
-  end
+  it { expect(get('/')).to be_ok }
 
   context 'when past limits' do
     before { Berater.test_mode = :fail }

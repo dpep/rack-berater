@@ -1,5 +1,3 @@
-require 'rspec/rails'
-
 describe Rack::Berater::RailsPrioritizer do
   before do
     class EchoController < ActionController::Base
@@ -35,11 +33,6 @@ describe Rack::Berater::RailsPrioritizer do
   end
 
   let(:app) { Rails.application }
-  let(:middleware) { described_class.new(app) }
-
-  after do
-    Rails.application = nil
-  end
 
   describe '#cache_key_for' do
     subject { described_class.new(app).method(:cache_key_for) }

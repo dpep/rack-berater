@@ -5,6 +5,7 @@ require 'rack/berater/rspec'
 require 'rack/test'
 require 'rails'
 require 'rspec'
+require 'rspec/rails'
 require 'simplecov'
 
 SimpleCov.start do
@@ -30,6 +31,14 @@ RSpec.configure do |config|
   end
 
   include Rack::Test::Methods
+
+  config.before do
+    Berater.test_mode = :pass
+  end
+
+  config.after do
+    Rails.application = nil
+  end
 end
 
 # Dir['./spec/support/**/*.rb'].sort.each { |f| require f }

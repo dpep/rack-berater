@@ -1,5 +1,4 @@
 require 'graphql'
-require 'rspec/rails'
 
 class UserType < GraphQL::Schema::Object
   field :name, String, null: false
@@ -40,7 +39,7 @@ describe Rack::Berater::GraphqlPrioritizer do
     Rails.application = Class.new(Rails::Application) do
       config.eager_load = false
       config.hosts.clear # disable hostname filtering
-      config.logger = ActiveSupport::Logger.new($stdout)
+      # config.logger = ActiveSupport::Logger.new($stdout)
     end
     Rails.application.middleware.use described_class
     Rails.initialize!
@@ -51,12 +50,7 @@ describe Rack::Berater::GraphqlPrioritizer do
   end
 
   let(:app) { Rails.application }
-  let(:middleware) { described_class.new(app) }
   let(:query) { 'query Me { me { name } }'}
-
-  after do
-    Rails.application = nil
-  end
 
   describe '#cache_key_for' do
     subject { described_class.new(app).method(:cache_key_for) }
