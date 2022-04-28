@@ -3,7 +3,7 @@ describe Rack::Berater do
     Rack::Builder.new do
       use Rack::Lint
       run (lambda do |env|
-        Berater::Unlimiter() do
+        Berater(:key, 1) do
           [200, {'Content-Type' => 'text/plain'}, ['OK']]
         end
       end)

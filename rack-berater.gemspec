@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'codecov'
   s.add_development_dependency 'graphql'
   s.add_development_dependency 'rack-test'
-  s.add_development_dependency 'rails'
+  s.add_development_dependency 'rails', '< 7'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'simplecov'

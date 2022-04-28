@@ -50,7 +50,7 @@ describe Rack::Berater do
       end
 
       context 'when operating beyond limits' do
-        before { Berater.test_mode = :fail }
+        let(:limiter) { ::Berater::Inhibitor.new }
 
         it 'returns an error' do
           expect(response.status).to eq 429
@@ -59,8 +59,7 @@ describe Rack::Berater do
     end
 
     context 'when limiter is a proc' do
-      let(:limiter_instance) { ::Berater::Unlimiter.new }
-      let(:limiter) { Proc.new { limiter_instance } }
+      let(:limiter) { Proc.new { ::Berater::Unlimiter.new } }
 
       include_examples 'works nominally'
 
@@ -70,7 +69,7 @@ describe Rack::Berater do
       end
 
       context 'when operating beyond limits' do
-        before { Berater.test_mode = :fail }
+        let(:limiter) { Proc.new { ::Berater::Inhibitor.new } }
 
         it 'returns an error' do
           expect(response.status).to eq 429
