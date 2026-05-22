@@ -1,16 +1,12 @@
-package_name = Dir.glob('*.gemspec')[0].split('.')[0]
-require './lib/rack/berater/version'
-
-package = Rack::Berater
-
+require_relative 'lib/rack/berater/version'
 
 Gem::Specification.new do |s|
-  s.name        = package_name
-  s.version     = package.const_get 'VERSION'
+  s.name        = 'rack-berater'
+  s.version     = Rack::Berater::VERSION
   s.authors     = ['Daniel Pepper']
-  s.summary     = package.to_s
+  s.summary     = 'Rack::Berater'
   s.description = 'limit incoming requests'
-  s.homepage    = "https://github.com/dpep/#{package_name}"
+  s.homepage    = 'https://github.com/dpep/rack-berater'
   s.license     = 'MIT'
 
   s.files       = Dir.glob('lib/**/*')
