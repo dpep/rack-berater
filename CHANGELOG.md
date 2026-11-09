@@ -1,3 +1,6 @@
+## Unreleased
+- requires Ruby >= 3.3
+
 ###  v0.4.1  (2021-11-18)
 - bug fix
 
