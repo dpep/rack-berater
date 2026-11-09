@@ -98,6 +98,21 @@ describe Rack::Berater::Prioritizer do
       end
     end
 
+    context 'when the app returns a lowercase priority header, per Rack 3' do
+      let(:app) do
+        ->(*) { [200, { described_class::HEADER.downcase => priority }, ['OK']] }
+      end
+
+      let(:priority) { '5' }
+
+      it 'caches the priority and removes the header' do
+        is_expected.to receive(:cache_set).with(cache_key, priority)
+
+        _, headers, _ = subject.call(env)
+        expect(headers).to be_empty
+      end
+    end
+
     it 'does not update the cache when no priority is returned' do
       is_expected.not_to receive(:cache_set)
       subject.call(env)
