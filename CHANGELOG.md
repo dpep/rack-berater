@@ -1,3 +1,6 @@
+###  Unreleased
+- Fix `Prioritizer` ignoring the priority header when a Rack 3 app returns it lowercase, as the Rack 3 spec requires: it was neither cached nor removed from the response.
+
 ## Unreleased
 - requires Ruby >= 3.3
 
