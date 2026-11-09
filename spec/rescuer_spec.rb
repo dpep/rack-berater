@@ -4,7 +4,7 @@ describe Rack::Berater do
       use Rack::Lint
       run (lambda do |env|
         Berater(:key, 1) do
-          [200, {'Content-Type' => 'text/plain'}, ['OK']]
+          [200, {'content-type' => 'text/plain'}, ['OK']]
         end
       end)
     end
@@ -18,8 +18,8 @@ describe Rack::Berater do
 
     it 'has the correct headers' do
       expect(response.headers).to eq({
-        'Content-Type' => 'text/plain',
-        'Content-Length' => '2',
+        'content-type' => 'text/plain',
+        'content-length' => '2',
       })
     end
 

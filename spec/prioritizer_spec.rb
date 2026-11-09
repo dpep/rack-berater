@@ -2,7 +2,7 @@ describe Rack::Berater::Prioritizer do
   describe '#call' do
     subject { described_class.new(app) }
 
-    let(:app) { ->(*) { [200, {'Content-Type' => 'text/plain'}, ['OK']] } }
+    let(:app) { ->(*) { [200, {'content-type' => 'text/plain'}, ['OK']] } }
     let(:cache_key) { subject.send(:cache_key_for, env) }
     let(:env) { Rack::MockRequest.env_for('/') }
 
@@ -155,7 +155,7 @@ describe Rack::Berater::Prioritizer do
 
     let(:app) do
       headers = {
-        'Content-Type' => 'text/plain',
+        'content-type' => 'text/plain',
         described_class::HEADER => app_priority,
       }.compact
 

@@ -12,15 +12,16 @@ Gem::Specification.new do |s|
   s.files       = Dir.glob('lib/**/*')
   s.test_files  = Dir.glob('spec/**/*_spec.rb')
 
+  s.required_ruby_version = '>= 3.3'
+
   s.add_dependency 'berater'
   s.add_dependency 'rack'
 
-  s.add_development_dependency 'byebug'
-  s.add_development_dependency 'codecov'
+  s.add_development_dependency 'debug'
   s.add_development_dependency 'graphql'
   s.add_development_dependency 'rack-test'
-  s.add_development_dependency 'rails', '< 7'
+  s.add_development_dependency 'rails', '>= 7'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'simplecov', '>= 1'
 end

@@ -1,6 +1,6 @@
 require 'action_controller/railtie'
 require 'berater/rspec'
-require 'byebug'
+require 'debug'
 require 'rack/berater/rspec'
 require 'rack/test'
 require 'rails'
@@ -9,12 +9,12 @@ require 'rspec/rails'
 require 'simplecov'
 
 SimpleCov.start do
-  add_filter /spec/
+  skip '/spec/'
 end
 
 if ENV['CI'] == 'true' || ENV['CODECOV_TOKEN']
-  require 'codecov'
-  SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  require 'simplecov_json_formatter'
+  SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
 end
 
 # load this gem
@@ -38,6 +38,10 @@ RSpec.configure do |config|
 
   config.after do
     Rails.application = nil
+
+    # Rails freezes these on initialize!, which each spec calls on a fresh app
+    ActiveSupport::Dependencies.autoload_paths = []
+    ActiveSupport::Dependencies.autoload_once_paths = []
   end
 end
 
