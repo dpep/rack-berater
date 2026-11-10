@@ -1,8 +1,9 @@
-###  Unreleased
+###  v0.5.0  (2026-11-09)
+- Add `Rack::Berater::GraphqlPrioritizer`, which keys the priority cache on the GraphQL operation name for `/graphql` requests.
+- Requires Ruby 3.3 or newer. Supports Rack 3 and Rails 7+.
 - Fix `Prioritizer` ignoring the priority header when a Rack 3 app returns it lowercase, as the Rack 3 spec requires: it was neither cached nor removed from the response.
-
-## Unreleased
-- requires Ruby >= 3.3
+- `RailsPrioritizer` falls back to path-based cache keys when routes are unavailable, rather than raising.
+- Subclasses: the protected `set_priority` is now `priority=`, and cache keys use the uppercase HTTP method (`GET:/users/x`).
 
 ###  v0.4.1  (2021-11-18)
 - bug fix
